@@ -28,9 +28,8 @@ def PressClear():
 def PressCalculate():
     global Equation
     print('Calculate Pressed')
-    print(''.join(Equation))
     CalcAnswer = 0
-    options = {'+': 'add', '-': 'sub'}
+    options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv'}
     option = add
     for item in Equation:
         if item in options:
@@ -38,8 +37,10 @@ def PressCalculate():
         else:
             number = float(item)
             CalcAnswer = option(CalcAnswer, number)
-    print(CalcAnswer)
-    return CalcAnswer
+    # print(''.join(Equation))
+    # print(str(CalcAnswer))
+    Answer.config(text=CalcAnswer)
+    PressClear()
 
 
 # Defaults for Interface
@@ -47,8 +48,8 @@ Background = 'White'
 BoldBaseFont = "Arial Bold"
 BaseFont = "Arial"
 FontColor = "Black"
-ButtonPaddingX = 0
-ButtonPaddingY = 6
+ButtonPaddingX = 3
+ButtonPaddingY = 3
 ButtonWidth = 5
 ButtonHeight = 2
 
@@ -62,8 +63,8 @@ CalcGUI.configure(bg=Background)
 AnswerFrame = Frame(CalcGUI, bg='Black')
 AnswerFrame.grid(columnspan=4, row=0)
 
-Answer = Label(AnswerFrame, text='Blank', anchor="w", width=20, font=(BoldBaseFont, 20), fg='white', bg='Black')
-Answer.grid(columnspan=4, row=0, padx=150)
+Answer = Label(AnswerFrame, text='0', anchor="w", width=14, font=(BoldBaseFont, 20), fg='white', bg='Black')
+Answer.grid(columnspan=4, row=0)
 
 OneKey = Button(text='1', command=partial(PressKey, 1), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 OneKey.grid(column=0, row=4, padx=ButtonPaddingX, pady=ButtonPaddingY)
