@@ -2,14 +2,18 @@ import math
 from functools import partial
 from tkinter import Tk, Label, Button, Frame
 
+Equation = []
+
 
 def PressKey(Key):
     print(str(Key) + ' was pressed.')
-    Answer.config(text=str(Key))
+    Equation.append(str(Key))
+    Answer.config(text=''.join(Equation))
 
 
 def PressCalculate():
     print('Calculate Pressed')
+    print(''.join(Equation))
 
 
 # Defaults for Interface
@@ -25,14 +29,14 @@ ButtonHeight = 2
 # Start of Tkinter interface
 CalcGUI = Tk()
 CalcGUI.title("Calculator")
-CalcGUI.geometry("356x3")
+# CalcGUI.geometry("356x350")
 # CalcGUI.iconbitmap('JudgeHammer.ico')
 CalcGUI.configure(bg=Background)
 
 AnswerFrame = Frame(CalcGUI, bg='Black')
 AnswerFrame.grid(columnspan=4, row=0)
 
-Answer = Label(AnswerFrame, text='Blank', font=(BoldBaseFont, 20), fg='white', bg='Black')
+Answer = Label(AnswerFrame, text='Blank', anchor="w", width=20, font=(BoldBaseFont, 20), fg='white', bg='Black')
 Answer.grid(columnspan=4, row=0, padx=150)
 
 OneKey = Button(text='1', command=partial(PressKey, 1), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
@@ -86,7 +90,7 @@ DeleteKey.grid(column=2, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 ClearKey = Button(text='Clear', command=partial(PressKey, 'Clear'), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 ClearKey.grid(column=1, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
-CalculateKey = Button(text='=', command=partial(PressKey, '='), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+CalculateKey = Button(text='=', command=PressCalculate, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 CalculateKey.grid(column=3, row=5, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
 CalcGUI.mainloop()
