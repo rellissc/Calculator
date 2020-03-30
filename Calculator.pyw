@@ -1,19 +1,45 @@
-import math
 from functools import partial
 from tkinter import Tk, Label, Button, Frame
+from operator import add, sub
 
 Equation = []
 
 
 def PressKey(Key):
-    print(str(Key) + ' was pressed.')
+    print('Pressed '+str(Key))
     Equation.append(str(Key))
     Answer.config(text=''.join(Equation))
 
 
+def PressDelete():
+    print('Clear was pressed.')
+    global Equation
+    del Equation[-1]
+    Answer.config(text=''.join(Equation))
+
+
+def PressClear():
+    print('Clear was pressed.')
+    global Equation
+    Equation = []
+    Answer.config(text=''.join(Equation))
+
+
 def PressCalculate():
+    global Equation
     print('Calculate Pressed')
     print(''.join(Equation))
+    CalcAnswer = 0
+    options = {'+': 'add', '-': 'sub'}
+    option = add
+    for item in Equation:
+        if item in options:
+            option = options[item]
+        else:
+            number = float(item)
+            CalcAnswer = option(CalcAnswer, number)
+    print(CalcAnswer)
+    return CalcAnswer
 
 
 # Defaults for Interface
@@ -84,10 +110,10 @@ DivideKey.grid(column=3, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 MultiplyKey = Button(text='X', command=partial(PressKey, '*'), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 MultiplyKey.grid(column=3, row=2, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
-DeleteKey = Button(text='Delete', command=partial(PressKey, 'Delete'), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+DeleteKey = Button(text='Delete', command=PressDelete, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 DeleteKey.grid(column=2, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
-ClearKey = Button(text='Clear', command=partial(PressKey, 'Clear'), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+ClearKey = Button(text='Clear', command=PressClear, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 ClearKey.grid(column=1, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
 CalculateKey = Button(text='=', command=PressCalculate, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
