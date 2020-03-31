@@ -1,30 +1,23 @@
 import unittest
-
-
-CalculateAnswer(operator, number1, number2)
-
-PressCalculate()
+from CalculatorScript import CalculateAnswer, PressCalculate
 
 
 class TestStringMethods(unittest.TestCase):
 
-    def setUpClass(cls):
+    # def setUpClass(self):
+    #     print('Test')
+    #
+    # def tearDown(self):
+    #     print('Test')
 
-    def tearDown(cls):
+    def test_CalculateAnswer(self):
+        self.assertEqual(CalculateAnswer('+', 45, 5), 50)
+        self.assertEqual(CalculateAnswer('-', 45, 5), 40)
+        self.assertEqual(CalculateAnswer('/', 45, 5), 50)
+        self.assertEqual(CalculateAnswer('*', 5, 5), 25)
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
-
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
+    def test_PressCalculate(self):
+        self.assertEqual(PressCalculate('+', 45, 5), 50)
 
 
 if __name__ == '__main__':

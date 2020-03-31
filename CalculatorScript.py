@@ -1,6 +1,5 @@
 from functools import partial
 from tkinter import Tk, Label, Button, Frame
-from operator import add, sub
 
 Equation = []
 TempEq = []
@@ -11,18 +10,15 @@ Finished = False
 def PressKey(Key):
     global Equation, TempEq, ShownEQ,  Finished
     print('Pressed '+str(Key))
-    print(type(Key))
-    if Key is int or Key == '.':
+    IntsAndDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, '.']
+    if Key in IntsAndDec:
         TempEq.append(str(Key))
-        print(TempEq)
-        print('Int or .')
     else:
-        Equation = Equation + TempEq
+        TempEq = ''.join(TempEq)
+        Equation.append(TempEq)
         print('Equation is ' + str(Equation))
         Equation.append(str(Key))
         TempEq = []
-        print(Equation)
-        print('Not Int')
     ShownEQ = Equation + TempEq
     Answer.config(text=''.join(ShownEQ))
     print(ShownEQ)
@@ -64,12 +60,12 @@ def CalculateAnswer(operator, number1, number2):
 
 
 def PressCalculate():
-    global Equation, Finished
+    global Equation, ShownEQ, Finished
     print('Calculate Pressed')
     CalcAnswer = 0
     options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv', '**': 'power'}
     operation = 'add'
-    for item in Equation:
+    for item in ShownEQ:
         if item in options:
             operation = options[item]
         else:
@@ -77,6 +73,7 @@ def PressCalculate():
             CalcAnswer = CalculateAnswer(operation, CalcAnswer, number)
     Answer.config(text=str(CalcAnswer))
     Finished = True
+    print(CalcAnswer)
 
 
 # Defaults for Interface
