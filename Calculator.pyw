@@ -30,19 +30,31 @@ def PressClear():
     Equation = []
     Answer.config(text=''.join(Equation))
 
+def CalculateAnswer( operator , number1 , number2):
+    if(operator=='add'):
+        return number1+number2
+    elif(operator=='sub'):
+        return number1-number2
+    elif(operator=='mul'):
+        return number1*number2
+    elif(operator=='truediv'):
+        return number1/number2
+    else:
+        raise NameError('Incorrect Operator')
+
 
 def PressCalculate():
     global Equation, Finished
     print('Calculate Pressed')
     CalcAnswer = 0
     options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv'}
-    option = add
+    operation='add'
     for item in Equation:
         if item in options:
-            option = options[item]
+            operation = options[item]
         else:
             number = float(item)
-            CalcAnswer = add(CalcAnswer, number)
+            CalcAnswer = CalculateAnswer(operation,CalcAnswer,number)
     # print(''.join(Equation))
     # print(str(CalcAnswer))
     Answer.config(text=str(CalcAnswer))
