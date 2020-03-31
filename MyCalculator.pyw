@@ -3,42 +3,62 @@ from tkinter import Tk, Label, Button, Frame
 from operator import add, sub
 
 Equation = []
+TempEq = []
+ShownEQ = []
 Finished = False
 
 
 def PressKey(Key):
-    global Equation, Finished
-    # if type(Key) == str and Finished or Key == '.' and Finished:
-    #     Equation = []
-    #     Finished = False
-    #     return Finished
+    global Equation, TempEq, ShownEQ,  Finished
     print('Pressed '+str(Key))
-    Equation.append(str(Key))
-    Answer.config(text=''.join(Equation))
+    print(type(Key))
+    if Key is int or Key == '.':
+        TempEq.append(str(Key))
+        print(TempEq)
+        print('Int or .')
+    else:
+        Equation = Equation + TempEq
+        print('Equation is ' + str(Equation))
+        Equation.append(str(Key))
+        TempEq = []
+        print(Equation)
+        print('Not Int')
+    ShownEQ = Equation + TempEq
+    Answer.config(text=''.join(ShownEQ))
+    print(ShownEQ)
+    print('')
 
 
 def PressDelete():
-    print('Clear was pressed.')
     global Equation
-    del Equation[-1]
-    Answer.config(text=''.join(Equation))
+    try:
+        del Equation[-1]
+        Answer.config(text=''.join(Equation))
+        print('Clear was pressed.')
+    except IndexError:
+        print('Nothing to Delete')
 
 
 def PressClear():
     print('Clear was pressed.')
-    global Equation
+    global Equation, TempEq, ShownEQ
     Equation = []
+    TempEq = []
+    ShownEQ = []
     Answer.config(text=''.join(Equation))
 
-def CalculateAnswer( operator , number1 , number2):
-    if(operator=='add'):
+
+def CalculateAnswer(operator, number1, number2):
+    if operator == 'add':
         return number1+number2
-    elif(operator=='sub'):
+    elif operator == 'sub':
         return number1-number2
-    elif(operator=='mul'):
+    elif operator == 'mul':
         return number1*number2
-    elif(operator=='truediv'):
+    elif operator == 'truediv':
         return number1/number2
+    elif operator == 'power':
+        return number1**number2
     else:
         raise NameError('Incorrect Operator')
 
@@ -47,16 +67,14 @@ def PressCalculate():
     global Equation, Finished
     print('Calculate Pressed')
     CalcAnswer = 0
-    options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv'}
-    operation='add'
+    options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv', '**': 'power'}
+    operation = 'add'
     for item in Equation:
         if item in options:
             operation = options[item]
         else:
             number = float(item)
-            CalcAnswer = CalculateAnswer(operation,CalcAnswer,number)
-    # print(''.join(Equation))
-    # print(str(CalcAnswer))
+            CalcAnswer = CalculateAnswer(operation, CalcAnswer, number)
     Answer.config(text=str(CalcAnswer))
     Finished = True
 
@@ -84,7 +102,7 @@ AnswerFrame.grid(columnspan=4, row=0)
 Answer = Label(AnswerFrame, text='0', anchor="w", width=14, font=(BoldBaseFont, 20), fg='white', bg='gray12')
 Answer.grid(columnspan=4, row=0)
 
-OneKey = Button(text='1', command=partial(PressKey, 1), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+OneKey = Button(text='1', command=partial(PressKey, int(1)), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 OneKey.grid(column=0, row=4, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
 TwoKey = Button(text='2', command=partial(PressKey, 2), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
