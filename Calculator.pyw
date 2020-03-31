@@ -3,9 +3,15 @@ from tkinter import Tk, Label, Button, Frame
 from operator import add, sub
 
 Equation = []
+Finished = False
 
 
 def PressKey(Key):
+    global Equation, Finished
+    # if type(Key) == str and Finished or Key == '.' and Finished:
+    #     Equation = []
+    #     Finished = False
+    #     return Finished
     print('Pressed '+str(Key))
     Equation.append(str(Key))
     Answer.config(text=''.join(Equation))
@@ -26,7 +32,7 @@ def PressClear():
 
 
 def PressCalculate():
-    global Equation
+    global Equation, Finished
     print('Calculate Pressed')
     CalcAnswer = 0
     options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv'}
@@ -36,11 +42,11 @@ def PressCalculate():
             option = options[item]
         else:
             number = float(item)
-            CalcAnswer = option(CalcAnswer, number)
+            CalcAnswer = add(CalcAnswer, number)
     # print(''.join(Equation))
     # print(str(CalcAnswer))
-    Answer.config(text=CalcAnswer)
-    PressClear()
+    Answer.config(text=str(CalcAnswer))
+    Finished = True
 
 
 # Defaults for Interface
@@ -57,13 +63,13 @@ ButtonHeight = 2
 CalcGUI = Tk()
 CalcGUI.title("Calculator")
 # CalcGUI.geometry("356x350")
-# CalcGUI.iconbitmap('JudgeHammer.ico')
+CalcGUI.iconbitmap('Calculator.ico')
 CalcGUI.configure(bg=Background)
 
 AnswerFrame = Frame(CalcGUI, bg='Black')
 AnswerFrame.grid(columnspan=4, row=0)
 
-Answer = Label(AnswerFrame, text='0', anchor="w", width=14, font=(BoldBaseFont, 20), fg='white', bg='Black')
+Answer = Label(AnswerFrame, text='0', anchor="w", width=14, font=(BoldBaseFont, 20), fg='white', bg='gray12')
 Answer.grid(columnspan=4, row=0)
 
 OneKey = Button(text='1', command=partial(PressKey, 1), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
