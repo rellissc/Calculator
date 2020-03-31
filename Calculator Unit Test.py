@@ -1,11 +1,16 @@
 import unittest
-from MyCalculator import CalculateAnswer
+
 
 CalculateAnswer(operator, number1, number2)
 
 PressCalculate()
 
+
 class TestStringMethods(unittest.TestCase):
+
+    def setUpClass(cls):
+
+    def tearDown(cls):
 
     def test_upper(self):
         self.assertEqual('foo'.upper(), 'FOO')
