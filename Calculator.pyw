@@ -1,6 +1,7 @@
 from functools import partial
 from tkinter import Tk, Label, Button, Frame
 from operator import add, sub
+import re
 
 Equation = []
 Finished = False
@@ -31,32 +32,118 @@ def PressClear():
     Answer.config(text=''.join(Equation))
 
 def CalculateAnswer( operator , number1 , number2):
-    if(operator=='add'):
+    if(operator=='+'):
         return number1+number2
-    elif(operator=='sub'):
+    elif(operator=='-'):
         return number1-number2
-    elif(operator=='mul'):
+    elif(operator=='*'):
         return number1*number2
-    elif(operator=='truediv'):
+    elif(operator=='/'):
         return number1/number2
     else:
         raise NameError('Incorrect Operator')
 
 
+def Tokenize(string):
+    string+='='
+    digitBuffer=''
+    tokenized=[]
+    for char in string:
+        if isDigit(char):
+            digitBuffer+=char
+        elif isOperator(char):
+            tokenized.append(('number',digitBuffer))
+            tokenized.append(('operator',char))
+            digitBuffer=''
+        else:
+            tokenized.append(('number',digitBuffer)) 
+    return tokenized
+
+def makeRPN(eqn):
+    outputStack=[]
+    operatorStack=[]
+    priority={'*':1,'/':1,'+':2,'-':2}
+
+    for token in eqn:
+        if(token[0]=='number'):
+            outputStack.append(token)
+        elif token[0]=='operator':
+            try:
+                while priority[token[1]]>=priority[operatorStack[-1][1]]:
+          
+                    outputStack.append(operatorStack.pop())
+            except:
+                pass
+      
+            operatorStack.append(token)
+            print('Stacks')
+            print(outputStack)
+            print(operatorStack)
+  
+    outputStack.append(operatorStack.pop())
+
+    while len(operatorStack)>0:
+        outputStack.append(operatorStack.pop())
+    return outputStack
+
+def calculateRPN(rpn):
+    resultStack=[]
+    while len(rpn)>0:
+        token=rpn.pop(0)
+        if token[0]=='number':
+            resultStack.append(float(token[1]))
+        elif token[0]=='operator':
+            op1=resultStack.pop()
+            op2=resultStack.pop()
+            resultStack.append(CalculateAnswer(token[1],op2,op1))
+    return resultStack.pop()
+
+
+def isDigit(char):
+    return re.match('[\d.]',char)
+
+def isOperator(char):
+    return re.match('[+*/-]',char)
+
+
+
 def PressCalculate():
     global Equation, Finished
-    print('Calculate Pressed')
-    CalcAnswer = 0
-    options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv'}
-    operation='add'
-    for item in Equation:
-        if item in options:
-            operation = options[item]
-        else:
-            number = float(item)
-            CalcAnswer = CalculateAnswer(operation,CalcAnswer,number)
-    # print(''.join(Equation))
-    # print(str(CalcAnswer))
+    tokenList=Tokenize(Equation)
+    rpn=makeRPN(tokenList)
+    CalcAnswer=calculateRPN(rpn)
+
+    #TokenizedEquation=[]
+    #numberBuffer='0'
+    #for char in Equation:
+    #    if isDigit(char):
+    #        numberBuffer+=char
+    #    elif isOperator(char):
+    #        TokenizedEquation.append(numberBuffer)
+    #        TokenizedEquation.append(char)
+        
+
+
+
+    #Equation+='='
+    #print('Calculate Pressed')
+    #CalcAnswer = 0
+    #options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv'}
+    #numberS=''
+    #operation='add'
+    #for item in Equation:
+    #    if item in options:
+    #        operation = options[item]
+    #        number = float(numberS)
+    #        numberS=''
+    #    elif item=='=':
+
+    #        CalcAnswer = CalculateAnswer(operation,CalcAnswer,number)
+    #    else:
+    #        numberS+=item
+            
+    ## print(''.join(Equation))
+    ## print(str(CalcAnswer))
     Answer.config(text=str(CalcAnswer))
     Finished = True
 
