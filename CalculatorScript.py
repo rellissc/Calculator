@@ -13,6 +13,15 @@ def PressKey(Key):
     IntsAndDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, '.']
     if Key in IntsAndDec:
         TempEq.append(str(Key))
+    elif Key == '=':
+        TempEq = ''.join(TempEq)
+        Equation.append(TempEq)
+        TempEq = []
+        print('Equation is ' + str(Equation))
+        ShownEQ = Equation
+        print(ShownEQ)
+        PressCalculate()
+        return
     else:
         TempEq = ''.join(TempEq)
         Equation.append(TempEq)
@@ -60,12 +69,13 @@ def CalculateAnswer(operator, number1, number2):
 
 
 def PressCalculate():
-    global Equation, ShownEQ, Finished
+    global Equation, ShownEQ, TempEq, Finished
     print('Calculate Pressed')
     CalcAnswer = 0
     options = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'truediv', '**': 'power'}
     operation = 'add'
-    for item in ShownEQ:
+    print('Before calculate' + str(Equation))
+    for item in Equation:
         if item in options:
             operation = options[item]
         else:
@@ -150,7 +160,7 @@ DeleteKey.grid(column=2, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 ClearKey = Button(text='Clear', command=PressClear, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 ClearKey.grid(column=1, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
-CalculateKey = Button(text='=', command=PressCalculate, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+CalculateKey = Button(text='=', command=partial(PressKey, '='), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 CalculateKey.grid(column=3, row=5, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
 CalcGUI.mainloop()
