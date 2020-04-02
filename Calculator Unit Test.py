@@ -10,13 +10,11 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(CalculateAnswer('-', 45, 5), 40)
         self.assertEqual(CalculateAnswer('/', 45, 5), 50)
         self.assertEqual(CalculateAnswer('*', 5, 5), 25)
-        self.assertEqual(CalculateAnswer('+', 4.5, 5), ?)
-        self.assertEqual(CalculateAnswer('-', 4.5, 5), ?)
-        self.assertEqual(CalculateAnswer('/', 4.5, 5), ?)
-        self.assertEqual(CalculateAnswer('*', 5.5, 5), ?)
-
-    def test_PressCalculate(self):
-        self.assertEqual(PressCalculate())
+        self.assertEqual(CalculateAnswer('+', 4.5, 5), 9.5)
+        self.assertEqual(CalculateAnswer('-', 5.5, 5), .5)
+        self.assertEqual(CalculateAnswer('/', 4.5, 5), .9)
+        self.assertEqual(CalculateAnswer('*', 5.5, 5), 27.5)
+        self.assertEqual(CalculateAnswer('-', 10, 15), -5)
 
 
 if __name__ == '__main__':
