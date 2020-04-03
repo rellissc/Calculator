@@ -10,10 +10,14 @@ Finished = False
 # todo Make everything clear if a number is pressed after = is pressed.
 def PressKey(Key):
     global Equation, TempEq, ShownEQ,  Finished
-    print('Pressed '+str(Key))
+    print('Pressed ' + str(Key))
     IntsAndDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.']
     if Key in IntsAndDec:
+        if Finished:
+            PressClear()
         TempEq.append(str(Key))
+        ShownEQ.append(str(Key))
+        ShownEQ = ''.join(ShownEQ)
     elif Key == '=':
         TempEq = ''.join(TempEq)
         Equation.append(TempEq)
@@ -25,21 +29,23 @@ def PressKey(Key):
     else:
         TempEq = ''.join(TempEq)
         Equation.append(TempEq)
-        print('Equation is ' + str(Equation))
         Equation.append(str(Key))
         TempEq = []
-    ShownEQ = Equation + TempEq
-    Answer.config(text=''.join(ShownEQ))
-    print(ShownEQ)
+        ShownEQ = Equation
+    Answer.config(text=str(''.join(ShownEQ)))
+    Finished = False
+    print('Equation is ' + str(Equation))
+    print('TempEq is ' + str(TempEq))
     print('')
 
 
 def PressDelete():
+    print('Delete was pressed.')
     global Equation
     try:
         del Equation[-1]
         Answer.config(text=''.join(str(Equation)))
-        print('Delete was pressed.')
+        print(Equation)
     except IndexError:
         print('Nothing to Delete')
 
@@ -50,10 +56,9 @@ def PressClear():
     Equation = []
     TempEq = []
     ShownEQ = []
-    Answer.config(text=''.join(Equation))
+    Answer.config(text=' 0')
 
 
-# todo Set order of operation.
 def CalculateAnswer(operator, number1, number2):
     if operator == '+':
         return number1+number2
@@ -70,25 +75,23 @@ def CalculateAnswer(operator, number1, number2):
 
 
 def PressCalculate():
-    global Equation, ShownEQ, TempEq, Finished
+    global Equation, TempEq, Finished
     OrderOp = ['**', '*', '/', '+', '-']
     print('Calculate Pressed')
-    CalcAnswer = 0
     for part in Equation:
         for Op in OrderOp:
-            try:
+            if Op in Equation:
                 OpLo = Equation.index(Op)
                 OpAnswer = CalculateAnswer(Op, int(Equation[OpLo-1]), int(Equation[OpLo+1]))
-                print('Answer is ' + str(OpAnswer))
                 for item in range(3):
                     Equation.pop(OpLo-1)
                 Equation.insert(OpLo-1, OpAnswer)
-            except ValueError:
-                print('No ' + Op + ' found.')
-    Answer.config(text='= ' + str(Equation[0]))
+    Answer.config(text=' = ' + str(Equation[0]))
     Finished = True
-    print(CalcAnswer)
 
+
+test1 = '5 + 6 * 2**5'
+print(eval(test1))
 
 # Defaults for Interface
 Background = 'White'
@@ -96,24 +99,23 @@ Button1bg = 'White'
 Button2bg = 'light sky blue'
 Button3bg = 'gray80'
 BoldBaseFont = "Arial Bold"
-BaseFont = "Arial"
+BaseFont = ("Arial", 24)
 FontColor = "Black"
-ButtonPaddingX = 3
+ButtonPaddingX = 1
 ButtonPaddingY = 3
-ButtonWidth = 5
-ButtonHeight = 2
+ButtonWidth = 3
+ButtonHeight = 1
 
 # Start of Tkinter interface
 CalcGUI = Tk()
 CalcGUI.title("Calculator")
-# CalcGUI.geometry("356x350")
 CalcGUI.iconbitmap('Calculator.ico')
 CalcGUI.configure(bg=Background)
 
 AnswerFrame = Frame(CalcGUI, bg='Black')
 AnswerFrame.grid(columnspan=4, row=0)
 
-Answer = Label(AnswerFrame, text='0', anchor="w", width=14, font=(BoldBaseFont, 20), fg='white', bg='gray12')
+Answer = Label(AnswerFrame, text=' 0', anchor="w", width=15, font=(BoldBaseFont, 25), fg='white', bg='gray12')
 Answer.grid(columnspan=4, row=0)
 
 OneKey = Button(text='1', command=partial(PressKey, 1), bg=Button1bg, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
@@ -164,10 +166,10 @@ MultiplyKey.grid(column=3, row=2, padx=ButtonPaddingX, pady=ButtonPaddingY)
 ExpoKey = Button(text='^', command=partial(PressKey, '**'), bg=Button2bg,  font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 ExpoKey.grid(column=2, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
-DeleteKey = Button(text='Delete', command=PressDelete, bg=Button3bg, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+DeleteKey = Button(text='Del', command=PressDelete, bg=Button3bg, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 DeleteKey.grid(column=1, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
-ClearKey = Button(text='Clear', command=PressClear, bg=Button3bg, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
+ClearKey = Button(text='C', command=PressClear, bg=Button3bg, font=BaseFont, width=ButtonWidth, height=ButtonHeight)
 ClearKey.grid(column=0, row=1, padx=ButtonPaddingX, pady=ButtonPaddingY)
 
 CalculateKey = Button(text='=', command=partial(PressKey, '='), font=BaseFont, width=ButtonWidth, height=ButtonHeight)
