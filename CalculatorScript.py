@@ -74,7 +74,7 @@ def CalculateAnswer(operator, number1, number2):
         raise NameError('Incorrect Operator')
 
 
-def PressCalculate():
+def PressCalculate(Equation):
     global Equation, TempEq, Finished
     OrderOp = ['**', '*', '/', '+', '-']
     print('Calculate Pressed')
@@ -88,6 +88,7 @@ def PressCalculate():
                 Equation.insert(OpLo-1, OpAnswer)
     Answer.config(text=' = ' + str(Equation[0]))
     Finished = True
+Return opanswer
 
 
 test1 = '5 + 6 * 2**5'
