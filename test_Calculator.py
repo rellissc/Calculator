@@ -1,6 +1,6 @@
 import unittest
 from tkinter import Tk
-from CalculatorFunctions import CalculateAnswer, PressCalculate
+from CalculatorFunctions import CalculateAnswer, CalculateEquation
 
 
 class TestStringMethods(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(CalculateAnswer('-', 10, 15), -5)
 
     def test_CalculateEquation(self):
-        self.assertEqual(CalculateAnswer(), 50)
+        self.assertEqual(CalculateEquation([5, '+', 6, '*', 2]), 17)
 
 
 if __name__ == '__main__':

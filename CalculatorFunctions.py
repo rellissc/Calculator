@@ -23,7 +23,7 @@ def PressKey(Key):
         TempEq = []
         print('Equation is ' + str(Equation))
         ShownEQ = Equation
-        PressCalculate(Equation)
+        CalculateEquation(Equation)
         return
     else:
         TempEq = ''.join(TempEq)
@@ -73,7 +73,7 @@ def PressClear():
     Answer.config(text=' 0')
 
 
-def PressCalculate(EquationEntry):
+def CalculateEquation(EquationEntry):
     global TempEq, Finished
     OrderOp = ['**', '*', '/', '+', '-']
     print('Calculate Pressed')
