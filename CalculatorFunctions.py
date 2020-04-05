@@ -19,11 +19,13 @@ def AddListToString(list, string):
 
 def PressKey(Key):
     global Equation, NumberBuffer, ToDisplay,  Finished
+
     print('Pressed ' + str(Key))
     IntsAndDec = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '.']
     if Key in IntsAndDec:
         if Finished:
             PressClear()
+
         NumberBuffer+=str(Key) #add item to list... why? USE A STRING
         ToDisplay+=str(Key)
     elif Key == '=':
@@ -46,6 +48,7 @@ def PressKey(Key):
     Finished = False
     print('Equation is ' + str(Equation))
     print('TempEq is ' + str(NumberBuffer))
+
     print('')
 
 
@@ -70,7 +73,7 @@ def PressDelete():
     global Equation
     try:
         del Equation[-1]
-        history=''.join(str(Equation))
+
         print(Equation)
     except IndexError:
         print('Nothing to Delete')

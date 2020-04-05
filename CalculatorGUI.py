@@ -2,6 +2,7 @@ from functools import partial
 from tkinter import Tk, Label, Button, Frame
 from CalculatorFunctions import CalculateEquation, PressKey, PressClear, PressDelete, GetHistory
 
+
 # Defaults for Interface
 Background = 'White'
 Button1bg = 'White'
